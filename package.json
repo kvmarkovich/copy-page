@@ -1,0 +1,41 @@
+{
+  "name": "copy-page",
+  "version": "0.0.1",
+  "description": "Script copies page and embeds all resources into it.",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kvmarkovich/copy-page.git"
+  },
+  "keywords": [
+    "copy",
+    "page",
+    "resources",
+    "parser"
+  ],
+  "author": "Konstantin Markovich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kvmarkovich/copy-page/issues"
+  },
+  "homepage": "https://github.com/kvmarkovich/copy-page#readme",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.6.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-requirejs": "^1.1.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.3",
+    "requirejs": "^2.3.3",
+    "webpack": "^2.4.1"
+  },
+  "dependencies": {
+    "rxjs": "^5.3.0"
+  }
+}
