@@ -2,7 +2,7 @@
   "name": "copy-page",
   "version": "0.0.1",
   "description": "Script copies page and embeds all resources into it.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "karma run"
   },
@@ -25,9 +25,13 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
     "jasmine-core": "^2.5.2",
     "karma": "^1.6.0",
+    "karma-babel-preprocessor": "^6.0.1",
     "karma-chrome-launcher": "^2.0.0",
+    "karma-ie-launcher": "^1.0.0",
     "karma-jasmine": "^1.1.0",
     "karma-requirejs": "^1.1.0",
     "karma-sourcemap-loader": "^0.3.7",

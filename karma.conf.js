@@ -1,5 +1,7 @@
 // Karma configuration
 // Generated on Wed Apr 19 2017 16:06:54 GMT+0300 (FLE Daylight Time)
+var webpackConfig = require('./webpack.config.js');
+// webpackConfig.entry = {};
 
 module.exports = function (config) {
     config.set({
@@ -16,16 +18,12 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             'test-main.js',
-            {pattern: '/lib/*.js', included: true},
-            {pattern: '/lib/*.js.map', included: false, served: true, watched: false, nocache: true},
-            {pattern: 'src/*.js', included: true},
+            {pattern: 'src/**/*.js', included: false},
+            // {pattern: 'src/*.js.map', included: false, served: true, watched: false, nocache: true},
             {pattern: 'test/**/*spec.js', included: false}
         ],
 
-        webpack: {
-            // ...
-            devtool: 'inline-source-map'
-        },
+        webpack: {},
 
         // list of files to exclude
         exclude: [],
@@ -34,8 +32,16 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'src/*.js': ['webpack', 'sourcemap'],
-            'test/**/*spec.js': ['webpack', 'sourcemap']
+            'src/*.js': ['babel', 'webpack', 'sourcemap'],
+            'test/**/*spec.js': ['babel', 'webpack', 'sourcemap']
+        },
+
+        babelPreprocessor: {
+            options: {
+                // modules: 'umd',
+                presets: ['es2015'],
+                sourceMap: 'inline'
+            }
         },
 
 
@@ -55,7 +61,7 @@ module.exports = function (config) {
 
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_ERROR,
 
 
         // enable / disable watching file and executing tests whenever any file changes
@@ -64,15 +70,15 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome'],
+        browsers: ['Chrome', 'IE'],
 
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
-        singleRun: false,
+        singleRun: true,
 
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity
     })
-}
+};

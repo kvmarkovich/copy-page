@@ -2,13 +2,11 @@
  * Created by kmarkovych on 07-Mar-17.
  */
 module.exports = {
-    entry: './src/copy-page',
-    devtool: 'source-map',
+    entry: './src/copyPage',
+    devtool: 'inline-source-map',
     output: {
-        library: 'copy-page',
-        filename: 'lib/index.js',
-        libraryTarget: 'umd',
-        umdNamedDefine: true
+        // library: 'copyPage',
+        filename: 'lib/index.js'
     },
 
     watch: false,
@@ -17,7 +15,12 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loader: "babel-loader"
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015'],
+                    sourceMap: 'inline'
+                }
             }
         ]
     }
