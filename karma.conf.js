@@ -1,7 +1,8 @@
 // Karma configuration
 // Generated on Wed Apr 19 2017 16:06:54 GMT+0300 (FLE Daylight Time)
-var webpackConfig = require('./webpack.config.js');
+// var webpackConfig = require('./webpack.config.js');
 // webpackConfig.entry = {};
+// var path = require('path');
 
 module.exports = function (config) {
     config.set({
@@ -23,7 +24,21 @@ module.exports = function (config) {
             {pattern: 'test/**/*spec.js', included: false}
         ],
 
-        webpack: {},
+        webpack: {
+            module: {
+                loaders: [
+                    {
+                        test: /\.js$/,
+                        loader: 'babel-loader',
+                        include: [
+                            /src/,
+                            /test/
+                        ],
+                        exclude: /(node_modules|bower_components)/
+                    }
+                ]
+            }
+        },
 
         // list of files to exclude
         exclude: [],
@@ -32,16 +47,8 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'src/*.js': ['babel', 'webpack', 'sourcemap'],
-            'test/**/*spec.js': ['babel', 'webpack', 'sourcemap']
-        },
-
-        babelPreprocessor: {
-            options: {
-                // modules: 'umd',
-                presets: ['es2015'],
-                sourceMap: 'inline'
-            }
+            'src/**/*.js': ['webpack', 'sourcemap'],
+            'test/**/*.js': ['webpack', 'sourcemap']
         },
 
 
@@ -70,8 +77,18 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome', 'IE'],
+        browsers: ['Chrome','Firefox', 'IE_no_addons'],
 
+        customLaunchers: {
+            IE_no_addons: {
+                base:  'IE',
+                flags: ['-extoff']
+            },
+            IE10: {
+                base: 'IE',
+                'x-ua-compatible': 'IE=EmulateIE10'
+            }
+        },
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
