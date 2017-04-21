@@ -26,6 +26,7 @@ let embedStyles = function (clonedDoc) {
 
         if (xhr.status === 200) {
             embeddedStyles.concat("\n").concat(xhr.responseText);
+            style.parentElement.removeChild(style);
         }
         else {
             console.error("Request " + style.href + " failed.  Returned status of " + xhr.status);
@@ -45,7 +46,7 @@ let embedStyles = function (clonedDoc) {
 let removeScripts = function (clonedDoc) {
     const scripts = clonedDoc.querySelectorAll('script');
     for (var i = 0; i < scripts.length; i++) {
-        scripts[i].remove();
+        scripts[i].parentElement.removeChild(scripts[i]);
     }
     return clonedDoc;
 };
@@ -59,6 +60,10 @@ let removeAnimation = function (clonedDoc) {
     clonedDoc.classList.add(COPY_PAGE_NO_ANIMATION_CLASSNAME);
     return clonedDoc;
 };
+
+let embedUrlsIntoStyles = function (clonedDoc) {
+    return clonedDoc;
+}
 /**
  * Copies page, embeds all resources into it and return it into callback
  * @param {callback} callback retrieves processed html string
@@ -68,9 +73,7 @@ export function copyPage(callback) {
         .map(clonedDoc => removeAnimation(clonedDoc))
         .map(clonedDoc => removeScripts(clonedDoc))
         .map(clonedDoc => embedStyles(clonedDoc))
-        .map(clonedDoc => {
-            return clonedDoc;
-        })
+        .map(clonedDoc => embedUrlsIntoStyles(clonedDoc))
         .subscribe(res => {
             callback(res);
             return res;
