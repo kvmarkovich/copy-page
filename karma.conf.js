@@ -19,10 +19,20 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             'test-main.js',
-            {pattern: 'src/**/*.js', included: false},
+            {pattern: 'src/**/*.js', included: false, watched: true},
             // {pattern: 'src/*.js.map', included: false, served: true, watched: false, nocache: true},
-            {pattern: 'test/**/*spec.js', included: false}
+            {pattern: 'test/**/*spec.js', included: false},
+            {pattern: 'test/template/**/*.html', included: false},
+            {pattern: 'test/styles/**/*.css', included: false},
+            {pattern: 'test/images/*.jpg', watched: false, included: false, served: true, nocache: false}
+
         ],
+
+        proxies: {
+            "/template/": "/base/test/template/",
+            "/images/": "/base/test/images/",
+            "/styles/": "/base/test/styles/"
+        },
 
         webpack: {
             module: {
@@ -48,7 +58,8 @@ module.exports = function (config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             'src/**/*.js': ['webpack', 'sourcemap'],
-            'test/**/*.js': ['webpack', 'sourcemap']
+            'test/**/*.js': ['webpack', 'sourcemap'],
+            // '**/*.html': ['html2js']
         },
 
 

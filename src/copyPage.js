@@ -9,43 +9,44 @@ import 'rxjs/add/operator/map';
 export const COPY_PAGE_NO_ANIMATION_CLASSNAME = 'no-animation';
 /**
  * Retrieves external styles and embeds the into document
- * @param {document} clonedDoc
- * @return {document}
+ * @param {Document} clonedDoc
+ * @return {Document}
  */
 let embedStyles = function (clonedDoc) {
-    let linkElementsList = clonedDoc.getElementsByTagName("link");
+    let linkElementsList = clonedDoc.querySelectorAll("link");
     let embeddedStyles = '';
-    for (let index = 0; index < linkElementsList.length; index++) {
-        let style = linkElementsList.item(index);
-        if (style.type !== "text/css") {
+    for (let index = linkElementsList.length - 1; index > 0; index--) {
+        let link = linkElementsList.item(index);
+        if (link.type !== "text/css") {
             continue;
         }
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', style.href, false);
+        xhr.open('GET', link.href, false);
         xhr.send();
 
         if (xhr.status === 200) {
             embeddedStyles.concat("\n").concat(xhr.responseText);
-            style.parentElement.removeChild(style);
+        } else {
+            // console.debug("Request " + link.href + " failed.  Returned status of " + xhr.status);
         }
-        else {
-            console.error("Request " + style.href + " failed.  Returned status of " + xhr.status);
-        }
+    }
+    for (let i = linkElementsList.length - 1; i >= 0; i--) {
+        linkElementsList[i].parentNode.removeChild(linkElementsList[i]);
     }
     const style = document.createElement('style');
     style.text = embeddedStyles;
-    clonedDoc.appendChild(style);
+    clonedDoc.getElementsByTagName('head')[0].appendChild(style);
     return clonedDoc;
 };
 
 /**
  * Removes all 'script' tags from document
- * @param {document} clonedDoc
- * @returns {document}
+ * @param {Document} clonedDoc
+ * @returns {Document}
  */
 let removeScripts = function (clonedDoc) {
     const scripts = clonedDoc.querySelectorAll('script');
-    for (var i = 0; i < scripts.length; i++) {
+    for (let i = 0; i < scripts.length; i++) {
         scripts[i].parentElement.removeChild(scripts[i]);
     }
     return clonedDoc;
@@ -53,18 +54,18 @@ let removeScripts = function (clonedDoc) {
 
 /**
  * Adds 'no-animation' class on document
- * @param {document} clonedDoc
- * @returns {document}
+ * @param {Document} clonedDoc
+ * @returns {Document}
  */
 let removeAnimation = function (clonedDoc) {
-    clonedDoc.classList.add(COPY_PAGE_NO_ANIMATION_CLASSNAME);
+    clonedDoc.querySelector('body').classList.add(COPY_PAGE_NO_ANIMATION_CLASSNAME);
     return clonedDoc;
 };
 
 /**
  * Embeds url into stylesheets using dataurl
- * @param {document} clonedDoc
- * @returns {document}
+ * @param {Document} clonedDoc
+ * @returns {Document}
  */
 let embedUrlsIntoStyles = function (clonedDoc) {
     return clonedDoc;
@@ -74,9 +75,13 @@ let embedUrlsIntoStyles = function (clonedDoc) {
 /**
  * Copies page, embeds all resources into it and return it into callback
  * @param {callback} callback retrieves processed html string
+ * @param {Document} htmlHtmlElement that will be processed
  */
-export function copyPage(callback) {
-    return Observable.of(document.documentElement.cloneNode(true))
+export function copyPage(callback, htmlHtmlElement) {
+    if (!htmlHtmlElement) {
+        htmlHtmlElement = document;
+    }
+    return Observable.of(htmlHtmlElement.documentElement.cloneNode(true))
         .map(clonedDoc => removeAnimation(clonedDoc))
         .map(clonedDoc => removeScripts(clonedDoc))
         .map(clonedDoc => embedStyles(clonedDoc))

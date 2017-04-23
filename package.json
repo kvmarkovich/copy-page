@@ -31,6 +31,7 @@
     "jasmine-core": "^2.5.2",
     "karma": "^1.6.0",
     "karma-babel-preprocessor": "^6.0.1",
+    "karma-html2js-preprocessor": "^1.1.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.1",
     "karma-ie-launcher": "^1.0.0",
