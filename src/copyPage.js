@@ -13,11 +13,11 @@ export const COPY_PAGE_NO_ANIMATION_CLASSNAME = 'no-animation';
  * @return {Document}
  */
 let embedStyles = function (clonedDoc) {
-    let linkElementsList = clonedDoc.querySelectorAll("link");
+    let linkElementsList = clonedDoc.querySelectorAll('link');
     let embeddedStyles = '';
     for (let index = linkElementsList.length - 1; index > 0; index--) {
         let link = linkElementsList.item(index);
-        if (link.type !== "text/css") {
+        if (link.type !== 'text/css') {
             continue;
         }
         const xhr = new XMLHttpRequest();
@@ -25,7 +25,7 @@ let embedStyles = function (clonedDoc) {
         xhr.send();
 
         if (xhr.status === 200) {
-            embeddedStyles.concat("\n").concat(xhr.responseText);
+            embeddedStyles.concat('\n').concat(xhr.responseText);
         } else {
             // console.debug("Request " + link.href + " failed.  Returned status of " + xhr.status);
         }

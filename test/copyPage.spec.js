@@ -1,7 +1,7 @@
 /**
  * Created by kmarkovych on 19-Apr-17.
  */
-import * as cp from '../src/copyPage'
+import * as cp from '../src/copyPage';
 const parser = new DOMParser();
 
 describe('cp.copyPage', () => {
@@ -11,9 +11,11 @@ describe('cp.copyPage', () => {
         xhr.open('get', '/template/index.html', false);
         xhr.send();
         if (xhr.status != 200) {
+            /* eslint-disable no-alert, no-console */
             console.error(xhr.status + ': ' + xhr.statusText);
+            /* eslint-enable no-alert, no-console */
         } else {
-            doc = parser.parseFromString(xhr.responseText, "text/html");
+            doc = parser.parseFromString(xhr.responseText, 'text/html');
         }
     });
 
@@ -24,47 +26,47 @@ describe('cp.copyPage', () => {
     });
     it('should not contain any "script" tag', () =>{
         cp.copyPage(converted => {
-            const scripts = converted.getElementsByTagName("script");
+            const scripts = converted.getElementsByTagName('script');
             expect(scripts.length).toBe(0);
-        }, doc)
+        }, doc);
     });
     it('should not contain any external style', () =>{
         cp.copyPage(converted => {
-            const scripts = converted.getElementsByTagName("link");
+            const scripts = converted.getElementsByTagName('link');
             expect(scripts.length).toEqual(0);
-        }, doc)
+        }, doc);
     });
 
     describe('embedStyles', () =>{
         it('should remove all external styles', () =>{
             cp.copyPage(converted => {
-                const links = converted.getElementsByTagName("link");
+                const links = converted.getElementsByTagName('link');
                 expect(links.length).toEqual(0);
-            }, doc)
+            }, doc);
         });
         it('should contain STYLE tag', () =>{
-            const expectedStyles = doc.getElementsByTagName("style");
+            const expectedStyles = doc.getElementsByTagName('style');
             cp.copyPage(converted => {
-                const actualStyles = converted.getElementsByTagName("style");
+                const actualStyles = converted.getElementsByTagName('style');
                 expect(expectedStyles.length).toBeLessThan(actualStyles.length);
-            }, doc)
+            }, doc);
         });
     });
 
     describe('removeScripts', () =>{
         it('should remove all SCRIPT tags', () =>{
             cp.copyPage(converted => {
-                const actualScripts = converted.getElementsByTagName("script");
+                const actualScripts = converted.getElementsByTagName('script');
                 expect(actualScripts.length).toBe(0);
-            }, doc)
+            }, doc);
         });
     });
     describe('removeAnimation', () =>{
         it('should add "no-animation" class on body', () =>{
             cp.copyPage(converted => {
-                const body = converted.querySelectorAll("body")[0];
+                const body = converted.querySelectorAll('body')[0];
                 expect(body.classList).toContain(cp.COPY_PAGE_NO_ANIMATION_CLASSNAME);
-            }, doc)
+            }, doc);
         });
     });
 });
